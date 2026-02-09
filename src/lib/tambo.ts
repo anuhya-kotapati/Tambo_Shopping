@@ -14,6 +14,12 @@ import {
   getCountryPopulations,
   getGlobalPopulationTrend,
 } from "@/services/population-stats";
+import { searchAmazonProducts } from "@/services/amazon-search";
+import { searchBestBuyProducts } from "@/services/bestbuy-search";
+import { searchCostcoProducts } from "@/services/costco-search";
+import { searchWalmartProducts } from "@/services/walmart-search";
+import { searchTargetProducts } from "@/services/target-search";
+import { searchSamsClubProducts } from "@/services/samsclub-search";
 import type { TamboComponent } from "@tambo-ai/react";
 import { TamboTool } from "@tambo-ai/react";
 import { z } from "zod";
@@ -72,6 +78,64 @@ export const tools: TamboTool[] = [
         growthRate: z.number(),
       }),
     ),
+  },
+  {
+    name: "amazonProductSearch",
+    description: "Search for real products on Amazon using keywords.",
+    tool: searchAmazonProducts,
+    inputSchema: z.object({
+      query: z.string().describe("The search keywords, e.g., 'gaming keyboard'"),
+      country: z.string().optional().describe("Country code, default US"),
+      page: z.string().optional().describe("Page number, default 1"),
+    }),
+    outputSchema: z.array(z.any()), // Determine strict schema if possible, using z.any() for now to bypass lint
+  },
+  {
+    name: "bestBuyProductSearch",
+    description: "Search for products on Best Buy.",
+    tool: searchBestBuyProducts,
+    inputSchema: z.object({
+      query: z.string().describe("The search keywords"),
+    }),
+    outputSchema: z.array(z.any()),
+  },
+  {
+    name: "costcoProductSearch",
+    description: "Search for products on Costco.",
+    tool: searchCostcoProducts,
+    inputSchema: z.object({
+      query: z.string().describe("The search keywords"),
+    }),
+    outputSchema: z.array(z.any()),
+  },
+  {
+    name: "walmartProductSearch",
+    description: "Search for products on Walmart.",
+    tool: searchWalmartProducts,
+    inputSchema: z.object({
+      query: z.string().describe("The search keywords"),
+      page: z.string().optional(),
+    }),
+    outputSchema: z.array(z.any()),
+  },
+  {
+    name: "targetProductSearch",
+    description: "Search for products on Target.",
+    tool: searchTargetProducts,
+    inputSchema: z.object({
+      query: z.string().describe("The search keywords"),
+      page: z.string().optional(),
+    }),
+    outputSchema: z.array(z.any()),
+  },
+  {
+    name: "samsClubProductSearch",
+    description: "Search for products on Sam's Club.",
+    tool: searchSamsClubProducts,
+    inputSchema: z.object({
+      query: z.string().describe("The search keywords"),
+    }),
+    outputSchema: z.array(z.any()),
   },
   // Add more tools here
 ];
